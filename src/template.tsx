@@ -25,7 +25,7 @@ export function OGTemplate({ title, iconUrl, description }: { title: string; ico
 			/>
 
 			{/* 文本内容 */}
-			<div style={{ display: 'flex', flexDirection: 'column' }}>
+			<div style={{ display: 'flex', flexDirection: 'column', width:'638px' }}>
 				<span
 					style={{
 						fontSize: '18px',
