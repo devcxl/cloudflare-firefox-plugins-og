@@ -4,6 +4,8 @@ import satori from 'satori';
 export async function handleRequest(request: Request, env: Env): Promise<Response> {
 	const { searchParams } = new URL(request.url);
 	const addon = searchParams.get('addon') || 'fuckoffcsdn';
+	const lang = searchParams.get('lang') || 'zh-CN';
+	// https://mozilla.github.io/addons-server/topics/api/addons.html#detail
 	const targetUrl = `https://addons.mozilla.org/api/v5/addons/addon/${addon}`;
 	const addonData: any = await (await fetch(targetUrl)).json();
 	// 从 R2 读取字体
@@ -14,7 +16,7 @@ export async function handleRequest(request: Request, env: Env): Promise<Respons
 
 	const fontData = await fontObject.arrayBuffer();
 
-	const svg = await satori(<OGTemplate title={addonData['name']['zh-CN']} iconUrl={addonData.icon_url} description={addonData['summary']['zh-CN']} />, {
+	const svg = await satori(<OGTemplate title={addonData['name'][lang]} iconUrl={addonData.icon_url} description={addonData['summary'][lang]} />, {
 		width: 720,
 		fonts: [
 			{
@@ -29,7 +31,7 @@ export async function handleRequest(request: Request, env: Env): Promise<Respons
 	return new Response(svg, {
 		headers: {
 			'Content-Type': 'image/svg+xml',
-			'Cache-Control': 'public, max-age=3600',
+			'Cache-Control': 'public, max-age=86400',
 		},
 	});
 }
